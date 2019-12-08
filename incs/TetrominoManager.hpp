@@ -11,15 +11,15 @@
 # include "GlobalException.hpp"
 # include "Tetromino.hpp"
 
-class ConfigFile
+class TetrominoManager
 {
 	public:
-							ConfigFile(std::string const &configFilePath) throw(GlobalException);
-							~ConfigFile();
+							TetrominoManager(std::string const &configFilePath) throw(GlobalException);
+							~TetrominoManager();
 		std::list<Tetromino>
 							getTetrominos() const;
 	private:
-		void				parseConfigFile() throw(GlobalException);
+		void				parseTetrominoManager() throw(GlobalException);
 		void				addTetromino(unsigned int const i, std::list<std::string> const &tetrominoStr) throw(GlobalException);
 
 		std::ifstream		m_file;

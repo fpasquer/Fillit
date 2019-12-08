@@ -1,7 +1,7 @@
 #include <iostream>
 #include "../incs/Tetromino.hpp"
 #include "../incs/GlobalException.hpp"
-#include "../incs/ConfigFile.hpp"
+#include "../incs/TetrominoManager.hpp"
 
 void						mainFunction(int argc, char **argv)
 {
@@ -11,7 +11,7 @@ void						mainFunction(int argc, char **argv)
 		error.append(" need config file");
 		throw GlobalException(error);
 	}
-	ConfigFile				config(argv[1]);
+	TetrominoManager		tetrominoManager(argv[1]);
 //	for (Tetromino const &tetromino : config.getTetrominos())
 //		std::cout << tetromino << std::endl;
 }

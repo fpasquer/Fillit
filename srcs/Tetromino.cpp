@@ -5,65 +5,62 @@ unsigned int				Tetromino::NUMBER_COL = 4;
 char						Tetromino::EMPTY = '.';
 char						Tetromino::CHARACTER = '#';
 
-							Tetromino::Tetromino(std::list<std::string> const &tetrominoList, unsigned int const i):
-		m_tetrominoList(tetrominoList),
+							Tetromino::Tetromino(std::list<std::string> const &tetrominoList, unsigned int const i) :
+		m_tetromino(),
 		m_i(i)
+
 {
-	if (this->m_tetrominoList.size() != Tetromino::NUMBER_ROW)
-		throw GlobalException("Tetromino " + std::to_string(this->m_i) + ": One tetromino must be composed by " + std::to_string(Tetromino::NUMBER_ROW) + " row(s)");
-	for (std::string rowTetromino : this->m_tetrominoList)
-	{
-		if (rowTetromino.length() != Tetromino::NUMBER_COL)
-			throw GlobalException("Tetromino " + std::to_string(this->m_i) + ": Each tetromino's row must be composed by " + std::to_string(Tetromino::NUMBER_COL) + " characters");
-	}
-	if (this->isValid() == false)
+	t_coordinate			coordStart;
+
+	this->checkTetrominoRowCol(tetrominoList);
+	coordStart = this->initTetromino(tetrominoList);
+	if (this->isValid(coordStart) == false)
 		throw GlobalException("Tetromino " + std::to_string(this->m_i) + ": does not exist");
 }
 
-std::list<std::string>		Tetromino::getTetromino(void) const
+void						Tetromino::checkTetrominoRowCol(std::list<std::string> const &tetrominoList) const
 {
-	return this->m_tetrominoList;
+	if (tetrominoList.size() != Tetromino::NUMBER_ROW)
+		throw GlobalException("Tetromino " + std::to_string(this->m_i) + ": One tetromino must be composed by " + std::to_string(Tetromino::NUMBER_ROW) + " row(s)");
+	for (std::string rowTetromino : tetrominoList)
+		if (rowTetromino.length() != Tetromino::NUMBER_COL)
+			throw GlobalException("Tetromino " + std::to_string(this->m_i) + ": Each tetromino's row must be composed by " + std::to_string(Tetromino::NUMBER_COL) + " characters");
 }
 
-std::ostream &operator		<<(std::ostream &out, Tetromino const &tetromino)
-{
-	for (std::string rowTetromino : tetromino.getTetromino())
-		out << rowTetromino << std::endl;
-    return out;
-}
 
-bool						Tetromino::isValid(void) const
+Tetromino::t_coordinate const
+							Tetromino::initTetromino(std::list<std::string> const &tetrominoList)
 {
+	std::vector<char>		row;
+	t_coordinate			coordStart = {0xFFFFFFFF, 0xFFFFFFFF}, coord = {0, 0};
 	unsigned int			count = 0;
-	t_coordinate			coordStart;
-	t_coordinate			coord;
 
-	coordStart.y = 0xFFFFFFFF;
-	coordStart.x = 0xFFFFFFFF;
-	coord.y = 0;
-	for (std::string const &rowTetromino : this->m_tetrominoList)
+	for (std::string const &tetrominoRow : tetrominoList)
 	{
+		row.clear();
 		coord.x = 0;
-		for (char const &c : rowTetromino)
+		for (char const &c : tetrominoRow)
 		{
 			if (c == Tetromino::CHARACTER)
 			{
 				coordStart.y = coordStart.y == 0xFFFFFFFF ? coord.y : coordStart.y;
 				coordStart.x = coordStart.x == 0xFFFFFFFF ? coord.x : coordStart.x;
-				count ++;
+				count++;
 			}
 			else if (c != Tetromino::EMPTY)
-				throw GlobalException("Tetromino " + std::to_string(this->m_i) + ": character : " + std::to_string(c) + " not available");
+				throw GlobalException("Tetromino " + std::to_string(this->m_i) + ": Not available");
+			row.push_back(c);
 			coord.x++;
 		}
 		coord.y++;
+		this->m_tetromino.push_back(row);
 	}
 	if (count != 4)
-		throw GlobalException("Tetromino " + std::to_string(this->m_i) + ": must have 4 " + std::to_string(Tetromino::CHARACTER));
-	return this->searchIfTetrominoExist(coordStart);
+		throw GlobalException("Tetromino " + std::to_string(this->m_i) + ": Must be composed of 4 '" + std::to_string(Tetromino::CHARACTER) + "'");
+	return coordStart;
 }
 
-bool						Tetromino::searchIfTetrominoExist(t_coordinate const &coordStart) const
+bool						Tetromino::isValid(t_coordinate const &coordStart) const
 {
 	Tetromino::t_checker const
 							checkers[] = {
@@ -71,12 +68,13 @@ bool						Tetromino::searchIfTetrominoExist(t_coordinate const &coordStart) cons
 		//{&Tetromino::isS},
 		//{&Tetromino::isLTop},
 	};
-
 	for (t_checker const &checker : checkers)
 		if ((*(this).*checker.f)(coordStart) == true)
 			return true;
 	return false;
 }
+
+
 
 bool						Tetromino::isSquare(t_coordinate const &coordStart) const
 {
@@ -88,10 +86,27 @@ bool						Tetromino::isSquare(t_coordinate const &coordStart) const
 	};
 
 	for (t_coordinate const &checker : square)
-		if (checker.y >= Tetromino::NUMBER_ROW || checker.x >= Tetromino::NUMBER_COL)
-		{
+		if (!(checker.y < Tetromino::NUMBER_ROW &&
+				checker.x < Tetromino::NUMBER_COL &&
+				this->m_tetromino[checker.y][checker.x] == Tetromino::CHARACTER))
 			return false;
-			std::cout << checker.y << "-" << checker.x << std::endl;
-		}
 	return true;
+}
+
+std::ostream &operator		<<(std::ostream &out, Tetromino const &tetromino)
+{
+	for (std::vector<char> rowTetromino : tetromino.getTetromino())
+	{
+		for (char c : rowTetromino)
+			out << c;
+		out << std::endl;
+	}
+    return out;
+}
+
+
+std::vector<std::vector<char>>
+							Tetromino::getTetromino(void) const
+{
+	return this->m_tetromino;
 }

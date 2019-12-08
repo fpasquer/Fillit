@@ -1,26 +1,26 @@
-#include "../incs/ConfigFile.hpp"
+#include "../incs/TetrominoManager.hpp"
 
-							ConfigFile::ConfigFile(std::string const &configFilePath) throw(GlobalException):
+							TetrominoManager::TetrominoManager(std::string const &configFilePath) throw(GlobalException):
 		m_file(configFilePath, std::fstream::in),
 		m_tetrominos()
 {
 	if (this->m_file.is_open() == false)
 		throw GlobalException(configFilePath + " is not a valid file");
-	this->parseConfigFile();
+	this->parseTetrominoManager();
 }
 
-							ConfigFile::~ConfigFile()
+							TetrominoManager::~TetrominoManager()
 {
 	if (this->m_file.is_open() == true)
 		this->m_file.close();
 }
 
-std::list<Tetromino>		ConfigFile::getTetrominos() const
+std::list<Tetromino>		TetrominoManager::getTetrominos() const
 {
 	return this->m_tetrominos;
 }
 
-void						ConfigFile::parseConfigFile() throw(GlobalException)
+void						TetrominoManager::parseTetrominoManager() throw(GlobalException)
 {
 	unsigned int			i = 0;
 	std::string				line;
@@ -36,11 +36,10 @@ void						ConfigFile::parseConfigFile() throw(GlobalException)
 	this->addTetromino(i++, tetrominoList);
 }
 
-void						ConfigFile::addTetromino(unsigned int const i, std::list<std::string> const &tetrominoList)
+void						TetrominoManager::addTetromino(unsigned int const i, std::list<std::string> const &tetrominoList)
 		throw(GlobalException)
 {
 	Tetromino				tetromino(tetrominoList, i);
 
 	this->m_tetrominos.push_back(tetromino);
-	std::cout << tetromino << std::endl;
 }

@@ -1,6 +1,6 @@
 NAME = fillit
 
-SRC_NAME = $(sort main.cpp GlobalException.cpp Tetromino.cpp ConfigFile.cpp)
+SRC_NAME = $(sort main.cpp GlobalException.cpp Tetromino.cpp TetrominoManager.cpp)
 
 SRC_PATH = ./srcs/
 OBJ_PATH = ./objs/
