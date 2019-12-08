@@ -12,8 +12,8 @@ void						mainFunction(int argc, char **argv)
 		throw GlobalException(error);
 	}
 	TetrominoManager		tetrominoManager(argv[1]);
-//	for (Tetromino const &tetromino : config.getTetrominos())
-//		std::cout << tetromino << std::endl;
+	for (Tetromino const &tetromino : tetrominoManager.getTetrominos())
+		std::cout << tetromino << std::endl;
 }
 
 int							main(int argc, char **argv)
