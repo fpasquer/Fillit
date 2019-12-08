@@ -40,7 +40,13 @@ class TetrominoChecker
 		bool				checkerFunction(std::vector<t_coordinate> const & coordExpected) const;
 		bool				isSquare(t_coordinate const &coordStart) const;
 		bool				isSHorizontally(t_coordinate const &coordStart) const;
+		bool				isSVetically(t_coordinate const &coordStart) const;
 		bool				isLTop(t_coordinate const &coordStart) const;
+		bool				isLRight(t_coordinate const &coordStart) const;
+		bool				isLBottom(t_coordinate const &coordStart) const;
+		bool				isLLeft(t_coordinate const &coordStart) const;
+		bool				isLineHorizontally(t_coordinate const &coordStart) const;
+		bool				isLineVertically(t_coordinate const &coordStart) const;
 };
 
 #endif
