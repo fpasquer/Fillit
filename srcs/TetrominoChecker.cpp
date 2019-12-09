@@ -73,6 +73,12 @@ bool						TetrominoChecker::isValid(t_coordinate const &coordStart) const
 		{&TetrominoChecker::isLLeft},
 		{&TetrominoChecker::isLineHorizontally},
 		{&TetrominoChecker::isLineVertically},
+		{&TetrominoChecker::isZHorizontally},
+		{&TetrominoChecker::isZVertically},
+		{&TetrominoChecker::isTTop},
+		{&TetrominoChecker::isTRight},
+		{&TetrominoChecker::isTBottom},
+		{&TetrominoChecker::isTLeft},
 	};
 	for (t_checker const &checker : checkers)
 		if ((*(this).*checker.f)(coordStart) == true)
@@ -248,6 +254,114 @@ bool						TetrominoChecker::isLineHorizontally(t_coordinate const &coordStart) c
 		{coordStart.x + 1, coordStart.y},
 		{coordStart.x + 2, coordStart.y},
 		{coordStart.x + 3, coordStart.y}
+	};
+	return this->checkerFunction(sLeft);
+}
+
+bool						TetrominoChecker::isZHorizontally(t_coordinate const &coordStart) const
+/**
+ * ##..
+ * .##.
+ * ....
+ * ....
+ * */
+{
+	std::vector<t_coordinate>
+							sLeft = {
+		{coordStart.x, coordStart.y},
+		{coordStart.x + 1, coordStart.y},
+		{coordStart.x + 1, coordStart.y + 1},
+		{coordStart.x + 2, coordStart.y + 1}
+	};
+	return this->checkerFunction(sLeft);
+}
+
+bool						TetrominoChecker::isZVertically(t_coordinate const &coordStart) const
+/**
+ * .#..
+ * ##..
+ * #...
+ * ....
+ * */
+{
+	std::vector<t_coordinate>
+							sLeft = {
+		{coordStart.x, coordStart.y},
+		{coordStart.x, coordStart.y + 1},
+		{coordStart.x - 1, coordStart.y + 1},
+		{coordStart.x - 1, coordStart.y + 2}
+	};
+	return this->checkerFunction(sLeft);
+}
+
+bool						TetrominoChecker::isTTop(t_coordinate const &coordStart) const
+/**
+ * .#..
+ * ###.
+ * ....
+ * ....
+ * */
+{
+	std::vector<t_coordinate>
+							sLeft = {
+		{coordStart.x, coordStart.y},
+		{coordStart.x, coordStart.y + 1},
+		{coordStart.x - 1, coordStart.y + 1},
+		{coordStart.x + 1, coordStart.y + 1}
+	};
+	return this->checkerFunction(sLeft);
+}
+
+bool						TetrominoChecker::isTRight(t_coordinate const &coordStart) const
+/**
+ * .#..
+ * .##.
+ * .#..
+ * ....
+ * */
+{
+	std::vector<t_coordinate>
+							sLeft = {
+		{coordStart.x, coordStart.y},
+		{coordStart.x, coordStart.y + 1},
+		{coordStart.x + 1, coordStart.y + 1},
+		{coordStart.x, coordStart.y + 2}
+	};
+	return this->checkerFunction(sLeft);
+}
+
+bool						TetrominoChecker::isTBottom(t_coordinate const &coordStart) const
+/**
+ * ###.
+ * .#..
+ * ....
+ * ....
+ * */
+{
+	std::vector<t_coordinate>
+							sLeft = {
+		{coordStart.x, coordStart.y},
+		{coordStart.x + 1, coordStart.y},
+		{coordStart.x + 2, coordStart.y},
+		{coordStart.x + 1, coordStart.y + 1}
+	};
+	return this->checkerFunction(sLeft);
+}
+
+bool						TetrominoChecker::isTLeft(t_coordinate const &coordStart) const
+/**
+ * .#..
+ * ##..
+ * .#..
+ * ....
+ * */
+{
+	std::vector<t_coordinate>
+							sLeft = {
+		{coordStart.x, coordStart.y},
+		{coordStart.x, coordStart.y + 1},
+		{coordStart.x - 1, coordStart.y + 1},
+		{coordStart.x, coordStart.y + 2}
 	};
 	return this->checkerFunction(sLeft);
 }

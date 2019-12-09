@@ -47,6 +47,12 @@ class TetrominoChecker
 		bool				isLLeft(t_coordinate const &coordStart) const;
 		bool				isLineHorizontally(t_coordinate const &coordStart) const;
 		bool				isLineVertically(t_coordinate const &coordStart) const;
+		bool				isZHorizontally(t_coordinate const &coordStart) const;
+		bool				isZVertically(t_coordinate const &coordStart) const;
+		bool				isTTop(t_coordinate const &coordStart) const;
+		bool				isTRight(t_coordinate const &coordStart) const;
+		bool				isTBottom(t_coordinate const &coordStart) const;
+		bool				isTLeft(t_coordinate const &coordStart) const;
 };
 
 #endif
