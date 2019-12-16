@@ -13,7 +13,7 @@ void						mainFunction(int argc, char **argv)
 	}
 	TetrominoManager		tetrominoManager(argv[1]);
 	for (Tetromino const &tetromino : tetrominoManager.getTetrominos())
-		std::cout << tetromino << std::endl;
+		std::cout << tetromino.getTetrominoIndex() << std::endl << tetromino << std::endl;
 }
 
 int							main(int argc, char **argv)

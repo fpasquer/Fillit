@@ -7,14 +7,15 @@ char const					TetrominoChecker::CHARACTER = '#';
 
 							TetrominoChecker::TetrominoChecker(std::list<std::string> const &tetrominoList, unsigned int const i) :
 		m_tetromino(),
-		m_i(i)
+		m_i(i),
+		m_index(NONE)
 
 {
 	t_coordinate			coordStart;
 
 	this->checkTetrominoRowCol(tetrominoList);
 	coordStart = this->initTetromino(tetrominoList);
-	if (this->isValid(coordStart) == false)
+	if ((this->m_index = this->isValid(coordStart)) == NONE)
 		throw GlobalException("Tetromino " + std::to_string(this->m_i) + ": does not exist");
 }
 
@@ -25,6 +26,12 @@ void						TetrominoChecker::checkTetrominoRowCol(std::list<std::string> const &t
 	for (std::string rowTetromino : tetrominoList)
 		if (rowTetromino.length() != TetrominoChecker::NUMBER_COL)
 			throw GlobalException("Tetromino " + std::to_string(this->m_i) + ": Each tetromino's row must be composed by " + std::to_string(TetrominoChecker::NUMBER_COL) + " characters");
+}
+
+TetrominoChecker::t_tetrominoIndex
+							TetrominoChecker::getTetrominoIndex(void) const
+{
+	return this->m_index;
 }
 
 
@@ -60,30 +67,31 @@ TetrominoChecker::t_coordinate const
 	return coordStart;
 }
 
-bool						TetrominoChecker::isValid(t_coordinate const &coordStart) const
+TetrominoChecker::t_tetrominoIndex
+							TetrominoChecker::isValid(t_coordinate const &coordStart) const
 {
 	TetrominoChecker::t_checker const
 							checkers[] = {
-		{&TetrominoChecker::isSquare},
-		{&TetrominoChecker::isSHorizontally},
-		{&TetrominoChecker::isSVetically},
-		{&TetrominoChecker::isLTop},
-		{&TetrominoChecker::isLRight},
-		{&TetrominoChecker::isLBottom},
-		{&TetrominoChecker::isLLeft},
-		{&TetrominoChecker::isLineHorizontally},
-		{&TetrominoChecker::isLineVertically},
-		{&TetrominoChecker::isZHorizontally},
-		{&TetrominoChecker::isZVertically},
-		{&TetrominoChecker::isTTop},
-		{&TetrominoChecker::isTRight},
-		{&TetrominoChecker::isTBottom},
-		{&TetrominoChecker::isTLeft},
+		{SQUARE, &TetrominoChecker::isSquare},
+		{S_HORIZONTALLY, &TetrominoChecker::isSHorizontally},
+		{S_VERTICALLY, &TetrominoChecker::isSVetically},
+		{L_TOP, &TetrominoChecker::isLTop},
+		{L_RIGHT, &TetrominoChecker::isLRight},
+		{L_BOTTOM, &TetrominoChecker::isLBottom},
+		{L_LEFT, &TetrominoChecker::isLLeft},
+		{LINE_HORIZONTALLY, &TetrominoChecker::isLineHorizontally},
+		{LINE_VERTICALLY, &TetrominoChecker::isLineVertically},
+		{Z_HORIZONTALLY, &TetrominoChecker::isZHorizontally},
+		{Z_VERTICALLY, &TetrominoChecker::isZVertically},
+		{T_TOP, &TetrominoChecker::isTTop},
+		{T_RIGHT, &TetrominoChecker::isTRight},
+		{T_BOTTOM, &TetrominoChecker::isTBottom},
+		{T_LEFT, &TetrominoChecker::isTLeft},
 	};
 	for (t_checker const &checker : checkers)
 		if ((*(this).*checker.f)(coordStart) == true)
-			return true;
-	return false;
+			return checker.tetrominoIndex;
+	return NONE;
 }
 
 bool						TetrominoChecker::checkerFunction(std::vector<t_coordinate> const & coordExpected) const
