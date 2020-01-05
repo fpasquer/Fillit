@@ -75,10 +75,14 @@ TetrominoChecker::t_tetrominoIndex
 		{SQUARE, &TetrominoChecker::isSquare},
 		{S_HORIZONTALLY, &TetrominoChecker::isSHorizontally},
 		{S_VERTICALLY, &TetrominoChecker::isSVetically},
-		{L_TOP, &TetrominoChecker::isLTop},
-		{L_RIGHT, &TetrominoChecker::isLRight},
-		{L_BOTTOM, &TetrominoChecker::isLBottom},
-		{L_LEFT, &TetrominoChecker::isLLeft},
+		{L_TOP1, &TetrominoChecker::isLTop1},
+		{L_TOP2, &TetrominoChecker::isLTop2},
+		{L_RIGHT1, &TetrominoChecker::isLRight1},
+		{L_RIGHT2, &TetrominoChecker::isLRight2},
+		{L_BOTTOM1, &TetrominoChecker::isLBottom1},
+		{L_BOTTOM2, &TetrominoChecker::isLBottom2},
+		{L_LEFT1, &TetrominoChecker::isLLeft1},
+		{L_LEFT2, &TetrominoChecker::isLLeft2},
 		{LINE_HORIZONTALLY, &TetrominoChecker::isLineHorizontally},
 		{LINE_VERTICALLY, &TetrominoChecker::isLineVertically},
 		{Z_HORIZONTALLY, &TetrominoChecker::isZHorizontally},
@@ -158,7 +162,7 @@ bool						TetrominoChecker::isSVetically(t_coordinate const &coordStart) const
 	return this->checkerFunction(sVertically);
 }
 
-bool						TetrominoChecker::isLTop(t_coordinate const &coordStart) const
+bool						TetrominoChecker::isLTop1(t_coordinate const &coordStart) const
 /**
  * ..#.
  * ###.
@@ -176,7 +180,25 @@ bool						TetrominoChecker::isLTop(t_coordinate const &coordStart) const
 	return this->checkerFunction(sHorizontally);
 }
 
-bool						TetrominoChecker::isLRight(t_coordinate const &coordStart) const
+bool						TetrominoChecker::isLTop2(t_coordinate const &coordStart) const
+/**
+ * #...
+ * ###.
+ * ....
+ * ....
+ * */
+{
+	std::vector<t_coordinate>
+							sHorizontally = {
+		{coordStart.x, coordStart.y},
+		{coordStart.x, coordStart.y + 1},
+		{coordStart.x + 1, coordStart.y + 1},
+		{coordStart.x + 2, coordStart.y + 1}
+	};
+	return this->checkerFunction(sHorizontally);
+}
+
+bool						TetrominoChecker::isLRight1(t_coordinate const &coordStart) const
 /**
  * #...
  * #...
@@ -194,7 +216,25 @@ bool						TetrominoChecker::isLRight(t_coordinate const &coordStart) const
 	return this->checkerFunction(sRight);
 }
 
-bool						TetrominoChecker::isLBottom(t_coordinate const &coordStart) const
+bool						TetrominoChecker::isLRight2(t_coordinate const &coordStart) const
+/**
+ * ##..
+ * #...
+ * #...
+ * ....
+ * */
+{
+	std::vector<t_coordinate>
+							sRight = {
+		{coordStart.x, coordStart.y},
+		{coordStart.x + 1, coordStart.y},
+		{coordStart.x, coordStart.y + 1},
+		{coordStart.x, coordStart.y + 2}
+	};
+	return this->checkerFunction(sRight);
+}
+
+bool						TetrominoChecker::isLBottom1(t_coordinate const &coordStart) const
 /**
  * ###.
  * #...
@@ -212,7 +252,25 @@ bool						TetrominoChecker::isLBottom(t_coordinate const &coordStart) const
 	return this->checkerFunction(sBottom);
 }
 
-bool						TetrominoChecker::isLLeft(t_coordinate const &coordStart) const
+bool						TetrominoChecker::isLBottom2(t_coordinate const &coordStart) const
+/**
+ * ###.
+ * ..#.
+ * ....
+ * ....
+ * */
+{
+	std::vector<t_coordinate>
+							sBottom = {
+		{coordStart.x, coordStart.y},
+		{coordStart.x + 1, coordStart.y},
+		{coordStart.x + 2, coordStart.y},
+		{coordStart.x + 2, coordStart.y + 1}
+	};
+	return this->checkerFunction(sBottom);
+}
+
+bool						TetrominoChecker::isLLeft1(t_coordinate const &coordStart) const
 /**
  * ##..
  * .#..
@@ -226,6 +284,24 @@ bool						TetrominoChecker::isLLeft(t_coordinate const &coordStart) const
 		{coordStart.x + 1, coordStart.y},
 		{coordStart.x + 1, coordStart.y + 1},
 		{coordStart.x + 1, coordStart.y + 2}
+	};
+	return this->checkerFunction(sLeft);
+}
+
+bool						TetrominoChecker::isLLeft2(t_coordinate const &coordStart) const
+/**
+ * .#..
+ * .#..
+ * ##..
+ * ....
+ * */
+{
+	std::vector<t_coordinate>
+							sLeft = {
+		{coordStart.x, coordStart.y},
+		{coordStart.x, coordStart.y + 1},
+		{coordStart.x, coordStart.y + 2},
+		{coordStart.x - 1, coordStart.y + 2}
 	};
 	return this->checkerFunction(sLeft);
 }

@@ -2,3 +2,5 @@ fillit
 fillit.dSYM/*
 objs/*
 .idea/*
+grids/*
+mem
